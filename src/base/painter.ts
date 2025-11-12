@@ -26,18 +26,18 @@ export class Painter {
     const ctx = this.canvas.getContext("2d");
 
     for (let i = 0; i < textStyles.length; i++) {
-      textStyles[i].draw(text[i] || "", ctx);
+      textStyles[i].draw(ctx, text[i] || "");
     }
   }
 
   public async drawBackground(imagePath: string) {
     const backgroundImage = await loadImage(imagePath);
     const background = new Background();
-    
+
     // reset canvas size
     this.canvas.width = backgroundImage.width;
     this.canvas.height = backgroundImage.height;
-    
+
     const ctx = this.canvas.getContext("2d");
     background.draw(ctx, backgroundImage);
   }

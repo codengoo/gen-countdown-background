@@ -1,4 +1,5 @@
 import { CanvasRenderingContext2D } from "canvas";
+import { BaseDraw } from "./base";
 
 export type Position = {
   x: number;
@@ -13,10 +14,12 @@ interface ITextOption {
   rotate?: number; // in rad
 }
 
-export class Text {
-  constructor(private readonly option: ITextOption) {}
+export class Text extends BaseDraw {
+  constructor(private readonly option: ITextOption) {
+    super();
+  }
 
-  public draw(text: string, ctx: CanvasRenderingContext2D) {
+  public draw(ctx: CanvasRenderingContext2D, text: string) {
     // Move to position
     ctx.rotate(this.option.rotate || 0);
 

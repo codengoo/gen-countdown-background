@@ -8,6 +8,5 @@ export class Background extends BaseDraw {
 
     ctx.drawImage(backgroundImage, 0, 0, width, height);
     ctx.save();
-    console.log("Hele");
   }
 }
