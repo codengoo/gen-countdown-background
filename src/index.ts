@@ -1,6 +1,7 @@
 import { createCanvas, loadImage, registerFont } from "canvas";
 import fs from "fs";
 import path from "path";
+import { Painter, Text } from "./base";
 
 interface TextImageOptions {
   mainNumber: string;
@@ -159,10 +160,31 @@ async function createSingleImage() {
 }
 
 // Chạy xử lý tất cả ảnh trong thư mục
-processAllImagesInFolder();
+// processAllImagesInFolder();
 
 // Hoặc chỉ xử lý 1 ảnh:
 // createSingleImage();
 
 // Export functions
-export { createImageWithTextOverlay, processAllImagesInFolder };
+// export { createImageWithTextOverlay, processAllImagesInFolder };
+
+async function draw() {
+  const painter = new Painter({
+    outputPath: "./output/countdown.png",
+    inputFolder: "./input",
+  });
+
+  await painter.drawBackground("./input/anh1.png");
+  const eventName = new Text({
+    color: "#FFFFFF",
+    position: { x: 0, y: 100 },
+    fontFamily: "Fz Fashion Signature",
+    fontSize: 100,
+  });
+
+  painter.drawText([eventName], ["Den Tet Nguyen Dan"]);
+
+  painter.save();
+}
+
+draw();
