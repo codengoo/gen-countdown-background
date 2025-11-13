@@ -1,54 +1,27 @@
-import path from "path";
-import fs from "fs";
-import { Canvas, createCanvas, loadImage } from "canvas";
+import { Canvas, createCanvas } from "canvas";
+import { BaseDraw, IBaseOption } from "./base";
 import { Text } from "./text";
-import { Background } from "./background";
 
-interface IPainterOption {
-  outputPath: string;
-  inputFolder: string;
+interface IPainterOption extends IBaseOption {
+  width?: number;
+  height?: number;
 }
 
-export class Painter {
+export class Painter extends BaseDraw<IPainterOption> {
   private readonly canvas: Canvas;
-  constructor(private readonly options: IPainterOption) {
-    this.canvas = createCanvas(2048, 1280);
-  }
-
-  private ensurePath(inp: string) {
-    const dir = path.dirname(inp);
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
-    }
+  constructor(options: IPainterOption) {
+    super(options);
+    this.canvas = createCanvas(options.width || 100, options.height || 100);
   }
 
   public drawText(textStyles: Text[], text: string[]) {
-    const ctx = this.canvas.getContext("2d");
-
     for (let i = 0; i < textStyles.length; i++) {
+      const ctx = this.canvas.getContext("2d");
       textStyles[i].draw(ctx, text[i] || "");
     }
   }
 
-  public async drawBackground(imagePath: string) {
-    const backgroundImage = await loadImage(imagePath);
-    const background = new Background();
-
-    // reset canvas size
-    this.canvas.width = backgroundImage.width;
-    this.canvas.height = backgroundImage.height;
-
-    const ctx = this.canvas.getContext("2d");
-    background.draw(ctx, backgroundImage);
-  }
-
-  public save(): void {
-    this.ensurePath(this.options.outputPath);
-
-    // Lưu file PNG
-    const buffer = this.canvas.toBuffer("image/png");
-    fs.writeFileSync(this.options.outputPath, buffer);
-
-    console.log(`✅ Đã tạo ảnh: ${this.options.outputPath}`);
+  public save(){
+    return super.save(this.canvas);
   }
 }
