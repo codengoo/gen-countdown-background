@@ -1,12 +1,36 @@
 import { execSync } from "child_process";
+import { readFile, writeFile } from "fs/promises";
 import path from "path";
 
-function setupSchedule() {
-  const taskName = "Set Countdown background";
-  const action = `cmd /k "cd ${path.resolve("./")} && start.bat"`;
-  const createCmd = `schtasks /Create /SC DAILY /TN "${taskName}" /TR "${action}" /ST 00:00 /RL LIMITED /F`;
+async function updateTaskScheduler() {
+  try {
+    const XML_FILE_PATH = "action.xml";
+    const NEW_WORKING_DIRECTORY = __dirname;
+    let xmlContent = await readFile(XML_FILE_PATH, "utf-16le");
+    const regex = /<WorkingDirectory>.*?<\/WorkingDirectory>/g;
+    const newXmlContent = xmlContent.replace(regex, `<WorkingDirectory>${NEW_WORKING_DIRECTORY}</WorkingDirectory>`);
 
-  execSync(createCmd);
+    // Ghi nội dung XML đã sửa đổi vào một file tạm thời
+    const tempXmlPath = path.join(__dirname, "action.xml");
+    await writeFile(tempXmlPath, newXmlContent, "utf-16le");
+
+    console.log(`✅ Đã thay thế WorkingDirectory thành: ${NEW_WORKING_DIRECTORY}`);
+  } catch (error) {
+    console.error(`❌ Lỗi khi xử lý file XML: ${(error as Error).message}`);
+  }
+}
+
+function setupSchedule() {
+  const TASK_NAME = "Set Countdown Background";
+  const tempXmlPath = path.join(__dirname, "action_1.xml");
+  const createTaskCmd = `schtasks /Create /XML "${tempXmlPath}" /TN "${TASK_NAME}" /F`;
+
+  execSync(createTaskCmd);
+  updateTaskScheduler();
 }
 
 setupSchedule();
+
+async function setup() {
+  updateTaskScheduler();
+}
