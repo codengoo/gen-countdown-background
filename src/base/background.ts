@@ -6,6 +6,7 @@ import { BaseDraw, IBaseOption } from "./base";
 interface IBackgroundOption extends IBaseOption {
   inputFolder: string;
   countdownPath?: string;
+  cleanOutputFolder?: boolean;
 }
 
 export class Background extends BaseDraw<IBackgroundOption> {
@@ -20,6 +21,11 @@ export class Background extends BaseDraw<IBackgroundOption> {
       return [".jpg", ".jpeg", ".png", ".webp"].includes(ext);
     });
     return imageFiles;
+  }
+
+  private cleanFolder() {
+    fs.rmSync(this.options.outputFolder, { recursive: true, force: true });
+    fs.mkdirSync(this.options.outputFolder, { recursive: true });
   }
 
   private async draw(backgroundPath: string): Promise<Canvas> {
@@ -43,13 +49,18 @@ export class Background extends BaseDraw<IBackgroundOption> {
   }
 
   public async createBackground() {
+    if (this.options.cleanOutputFolder) this.cleanFolder();
     const files = this.scanImagesInFolder(this.options.inputFolder);
-    console.log(files);
+    console.log("Found: ", files);
 
+    const results = [];
     for (const file of files) {
       const filePath = path.join(this.options.inputFolder, file);
       const canvas = await this.draw(filePath);
-      this.save(canvas);
+      const bgPath = this.save(canvas);
+      results.push(bgPath);
     }
+
+    return results;
   }
 }

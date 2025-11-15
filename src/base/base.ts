@@ -25,6 +25,6 @@ export abstract class BaseDraw<T extends IBaseOption> {
     fs.writeFileSync(outputPath, buffer);
 
     console.log(`✅ Đã tạo ảnh: ${outputPath}`);
-    return outputPath;
+    return path.resolve(outputPath);
   }
 }
