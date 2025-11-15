@@ -2,7 +2,8 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "npx ts-node src/index.ts"
+    "dev": "npx ts-node src/index.ts",
+    "schedule": "npx ts-node schedule.ts"
   },
   "dependencies": {
     "canvas": "^3.2.0",

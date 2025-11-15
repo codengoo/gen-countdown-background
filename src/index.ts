@@ -14,6 +14,7 @@ async function draw2() {
     cleanOutputFolder: true,
   });
   const allBgPaths = await bg.createBackground();
+  console.log(allBgPaths);
 
   if (allBgPaths?.length > 0) {
     console.log("Setting background...");
@@ -35,8 +36,6 @@ async function draw2() {
       console.log(`Child process exited with code ${code}`);
     });
   }
-
-  console.log(allBgPaths);
 }
 
 draw2();

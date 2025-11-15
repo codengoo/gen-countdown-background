@@ -1,17 +1,11 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "module": "commonjs",
-    "lib": ["ES2020"],
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "moduleResolution": "node"
+    "target": "ES2020",        // phiên bản JS muốn output
+    "module": "CommonJS",      // hoặc "ESNext" nếu dùng module ES
+    "outDir": "./dist",        // thư mục output
+    "rootDir": "./src",        // thư mục source
+    "strict": true,            // bật strict mode
+    "esModuleInterop": true    // hỗ trợ import default từ module commonjs
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*"]
 }
