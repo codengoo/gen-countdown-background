@@ -2,7 +2,7 @@ import { execSync } from "child_process";
 import { readFile, writeFile } from "fs/promises";
 import path from "path";
 
-async function updateTaskScheduler() {
+async function updateXML() {
   try {
     const XML_FILE_PATH = "action.xml";
     const NEW_WORKING_DIRECTORY = __dirname;
@@ -20,17 +20,17 @@ async function updateTaskScheduler() {
   }
 }
 
-function setupSchedule() {
+async function updateTaskScheduler() {
   const TASK_NAME = "Set Countdown Background";
-  const tempXmlPath = path.join(__dirname, "action_1.xml");
+  const tempXmlPath = path.join(__dirname, "action.xml");
   const createTaskCmd = `schtasks /Create /XML "${tempXmlPath}" /TN "${TASK_NAME}" /F`;
-
   execSync(createTaskCmd);
-  updateTaskScheduler();
+  console.log("✅ Đã tạo task scheduler");
 }
-
-setupSchedule();
 
 async function setup() {
-  updateTaskScheduler();
+  await updateXML();
+  await updateTaskScheduler();
 }
+
+setup();
