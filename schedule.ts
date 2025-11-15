@@ -10,7 +10,6 @@ async function updateXML() {
     const regex = /<WorkingDirectory>.*?<\/WorkingDirectory>/g;
     const newXmlContent = xmlContent.replace(regex, `<WorkingDirectory>${NEW_WORKING_DIRECTORY}</WorkingDirectory>`);
 
-    // Ghi nội dung XML đã sửa đổi vào một file tạm thời
     const tempXmlPath = path.join(__dirname, "action.xml");
     await writeFile(tempXmlPath, newXmlContent, "utf-16le");
 
