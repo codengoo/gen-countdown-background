@@ -14,10 +14,12 @@ export async function getImageLink() {
       client_id: access_key,
       orientation: "landscape",
       fit: "crop",
+      w: 2048,
+      h: 1280,
     },
   });
 
-  const imageUrl = response.data.urls.regular;
+  const imageUrl = response.data.urls.full;
   return imageUrl;
 }
 

@@ -16,12 +16,12 @@ export abstract class BaseDraw<T extends IBaseOption> {
     }
   }
 
-  protected save(canvas: Canvas): string {
+  protected save(canvas: Canvas, format: "image/png" | "image/jpeg" = "image/png"): string {
     const outputPath = path.join(this.options.outputFolder, `${uuid()}.png`);
     this.ensurePath(outputPath);
 
     // Lưu file PNG
-    const buffer = canvas.toBuffer("image/png");
+    const buffer = canvas.toBuffer(format as any);
     fs.writeFileSync(outputPath, buffer);
 
     console.log(`✅ Đã tạo ảnh: ${outputPath}`);

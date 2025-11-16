@@ -68,7 +68,7 @@ export class Background extends BaseDraw<IBackgroundOption> {
     const results = [];
     for (const filepath of files) {
       const canvas = await this.draw(filepath);
-      const bgPath = this.save(canvas);
+      const bgPath = this.save(canvas, "image/jpeg");
       results.push(bgPath);
     }
 
