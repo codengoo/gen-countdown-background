@@ -1,7 +1,7 @@
 import { Canvas, createCanvas, loadImage } from "canvas";
 import fs from "fs";
 import path from "path";
-import { downloadImage, getImageLink } from "../core";
+import { ImageDownloader } from "../core";
 import { BaseDraw, IBaseOption } from "./base";
 
 interface IBackgroundOption extends IBaseOption {
@@ -54,9 +54,8 @@ export class Background extends BaseDraw<IBackgroundOption> {
 
   private async downloadImage() {
     if (!this.options.downloadFolder) throw new Error("Missing download folder");
-    const imageUrl = await getImageLink();
-    const filePath = await downloadImage(imageUrl, this.options.downloadFolder);
-    return filePath;
+    const downloader = new ImageDownloader({ outputFolder: this.options.downloadFolder });
+    return downloader.get();
   }
 
   public async createBackground() {
