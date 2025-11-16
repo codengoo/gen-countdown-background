@@ -12,7 +12,7 @@ export class Event {
   constructor(private readonly event: IEvent) {}
 
   private calcDayLeft() {
-    const dayLeft = moment(this.event.time).diff(moment(), "days");
+    const dayLeft = moment(this.event.time).startOf("day").diff(moment().startOf("day"), "days");
     return Math.abs(dayLeft).toString();
   }
 
