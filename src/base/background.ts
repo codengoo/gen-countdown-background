@@ -54,7 +54,10 @@ export class Background extends BaseDraw<IBackgroundOption> {
 
   private async downloadImage() {
     if (!this.options.downloadFolder) throw new Error("Missing download folder");
-    const downloader = new ImageDownloader({ outputFolder: this.options.downloadFolder });
+    const downloader = new ImageDownloader({
+      outputFolder: this.options.downloadFolder,
+      keyword: "nature",
+    });
     return downloader.get();
   }
 

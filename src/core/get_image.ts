@@ -3,25 +3,32 @@ import dotenv from "dotenv";
 import { createWriteStream, mkdirSync } from "fs";
 import path from "path";
 import { v7 as uuid } from "uuid";
+import { Rotation } from "./rotation";
 dotenv.config();
 
 interface IImageDownloaderOption {
   outputFolder: string;
+  keyword?: string;
   maxWidth?: number;
 }
 
 export class ImageDownloader {
-  constructor(private readonly options: IImageDownloaderOption) {}
+  private readonly accessKey: Rotation;
+  constructor(private readonly options: IImageDownloaderOption) {
+    const keys = process.env.SPLASH_API_KEY?.split(",").map((key) => key.trim()) || [];
+    this.accessKey = new Rotation(keys);
+  }
 
   private async getImageLink() {
     const url = `https://api.unsplash.com/photos/random`;
-    const access_key = process.env.SPLASH_API_KEY;
-
+    const key = this.accessKey.next();
+    console.log(key);
+    
     const response = await axios.get(url, {
       params: {
-        client_id: access_key,
+        client_id: key,
         orientation: "landscape",
-        fit: "crop",
+        ...(this.options.keyword && { query: this.options.keyword }),
       },
     });
 
