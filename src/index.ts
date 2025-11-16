@@ -8,10 +8,12 @@ async function draw2() {
   console.log(countdownPath);
 
   const bg = new Background({
-    inputFolder: "./input/original",
+    // inputFolder: "./input/original",
+    downloadFolder: "./input/download",
     outputFolder: "./output",
     countdownPath: countdownPath,
     cleanOutputFolder: true,
+    useOnlineImage: true,
   });
   const allBgPaths = await bg.createBackground();
   console.log(allBgPaths);
